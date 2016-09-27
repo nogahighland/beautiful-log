@@ -1,7 +1,8 @@
-require "beautiful/log/version"
+require 'beautiful/log/version'
+require 'beautiful/log/formatter'
+require 'beautiful/log/task_logging'
 
 module Beautiful
   module Log
-    # Your code goes here...
   end
 end
