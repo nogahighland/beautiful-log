@@ -5,9 +5,9 @@ module Beautiful
     class Formatter < ::Logger::Formatter
       attr_reader :only_project_code, :ignore_paths
 
-      def initialize(only_project_code: true, backtrace_ignore_paths: [])
+      def initialize(only_project_code: true, backtrace_ignore_paths: ['vendor/bundle'])
         @only_project_code = only_project_code
-        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new path }
+        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" }
       end
 
       cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%m:%S' }
@@ -38,9 +38,10 @@ module Beautiful
 
       def format_backtrace(e)
         lines = e.backtrace
-        lines = lines
-                  .select { |line| project_code?(line) } if only_project_code
-                  .select { |line| ignore_paths?(line) }
+        lines = lines.select do |line|
+          (only_project_code && project_code?(line)) && !ignore_path?(line)
+        end
+
         format_lines = lines.map do |line|
           line = highlight_line(line) if project_code?(line)
           "\t#{line}"
@@ -67,7 +68,7 @@ module Beautiful
         backtrace_line.index(Rails.root.to_s).try(:zero?)
       end
 
-      def ignore_paths?(backtrace_line)
+      def ignore_path?(backtrace_line)
         ignore_paths.find { |path| backtrace_line =~ path } unless ignore_paths.empty?
       end
     end
