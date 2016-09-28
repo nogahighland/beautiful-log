@@ -1,5 +1,7 @@
 # Beautiful::Log(β)
 
+![](https://travis-ci.org/nogahighland/beautiful-log.svg?branch=master)
+
 Make Rails log beautiful!
 
 ## Colored log
