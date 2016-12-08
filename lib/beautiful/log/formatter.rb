@@ -8,8 +8,8 @@ module Beautiful
 
       def initialize(only_project_code: true, backtrace_ignore_paths: [])
         @only_project_code = only_project_code
-        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } + bundle_path
-        @allow_path        = Regexp.new install_path
+        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << bundle_path
+        @allow_path        = Regexp.new bundle_install_path
       end
 
       def call(severity, timestamp, _progname, message)
@@ -74,11 +74,11 @@ module Beautiful
       end
 
       def bundle_install_path
-        Bundler.install_path if defined?(Bundler)
+        Bundler.install_path.to_s if defined?(Bundler)
       end
 
       def bundle_path
-        Bundler.bundle_path if defined?(Bundler)
+        Bundler.bundle_path.to_s if defined?(Bundler)
       end
     end
   end
