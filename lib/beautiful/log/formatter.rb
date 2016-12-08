@@ -3,14 +3,14 @@ require 'colorize'
 module Beautiful
   module Log
     class Formatter < ::Logger::Formatter
-      attr_reader :only_project_code, :ignore_paths
-
-      def initialize(only_project_code: true, backtrace_ignore_paths: ['vendor/bundle'])
-        @only_project_code = only_project_code
-        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" }
-      end
-
+      attr_reader :only_project_code, :ignore_paths, :allow_path
       cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%m:%S' }
+
+      def initialize(only_project_code: true, backtrace_ignore_paths: [])
+        @only_project_code = only_project_code
+        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } + bundle_path
+        @allow_path        = Regexp.new install_path
+      end
 
       def call(severity, timestamp, _progname, message)
         "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
@@ -69,7 +69,16 @@ module Beautiful
       end
 
       def ignore_path?(backtrace_line)
+        return false if backtrace_line =~ allow_path
         ignore_paths.find { |path| backtrace_line =~ path } unless ignore_paths.empty?
+      end
+
+      def bundle_install_path
+        Bundler.install_path if defined?(Bundler)
+      end
+
+      def bundle_path
+        Bundler.bundle_path if defined?(Bundler)
       end
     end
   end
