@@ -31,7 +31,7 @@ module Beautiful
         file_path = (levels[0..-2] << levels[-1].bold.underline).join('/')
         line = [file_path, line_number, method].join(':')
 
-        line.send(highlighted_line_color)
+        line.send(backtrace_color)
       end
     end
   end

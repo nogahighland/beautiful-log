@@ -18,6 +18,8 @@ module Beautiful
       include RenderLogFoematter
       include CompleteLogFormatter
 
+      DEFAULT_STATUS_CODE_COLORS = { (1..3) => :green, 'other' => :red }.freeze
+
       def initialize(
         only_project_code: true,
         backtrace_ignore_paths: [],
@@ -25,7 +27,7 @@ module Beautiful
         highlighted_line_color: :cyan,
         backtrace_color: :light_red,
         error_file_path_color: :red,
-        status_code_color: { (1..3) => :green, 'other' => :red}
+        status_code_color: {}
       )
         @only_project_code = only_project_code
         @ignore_paths = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
@@ -35,7 +37,7 @@ module Beautiful
         @highlighted_line_color = highlighted_line_color
         @backtrace_color = backtrace_color
         @error_file_path_color = error_file_path_color
-        @status_code_color = status_code_color.with_indifferent_access
+        @status_code_color = DEFAULT_STATUS_CODE_COLORS.merge(status_code_color)
       end
 
       def call(severity, timestamp, _progname, message)

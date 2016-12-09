@@ -2,7 +2,7 @@
 
 ![](https://travis-ci.org/nogahighland/beautiful-log.svg?branch=master)
 
-Make Rails log beautiful!
+Make **Rails** log beautiful!
 
 ## Colored log
 
@@ -13,14 +13,22 @@ Make Rails log beautiful!
 
 ## Backtrace
 
-![2016-09-28 1 20 33](https://cloud.githubusercontent.com/assets/1780339/18882985/6a8ce580-851c-11e6-9331-e1a8693e93d4.png)
+![_2016-12-10_1_29_59](https://cloud.githubusercontent.com/assets/1780339/21057135/b61351d6-be7b-11e6-91d4-e754abb730a4.png)
 
 Your backtrace will be neat and understandable with `Beautiful::Log::Formatter`.
 
 - Only the file paths of **your codes** (app/..) are displayed and highlighted.
 - The paths are no longer verbosely long, they are shrunk to relative path from your project root.
 
-Rescue error, just log it `Rails.logger.error e` .
+## Status Code
+
+![2016-12-10 1 30 33](https://cloud.githubusercontent.com/assets/1780339/21056588/967fd198-be79-11e6-9c1e-6b44ed5cd8ae.png)
+
+![2016-12-10 1 41 25](https://cloud.githubusercontent.com/assets/1780339/21056640/cb73fc4e-be79-11e6-88d3-0d86711d5e3b.png)
+
+You don't miss the responses' safety any more. A log of response completion tells either your app responded correctly or not by intuitive colors. You can customize color according to status code range (hundread level e.g: `1..3`.
+
+_Rescue error, just log it `Rails.logger.error e` ._
 
 ## Logs in Rake tasks
 
@@ -34,12 +42,14 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'beautiful-log'
+# or
+gem 'beautiful-log', git: 'git@github.com:nogahighland/beautiful-log.git'
 ```
 
 And then execute:
 
 ```
-$ bundle
+$ bundle install
 ```
 
 Or install it yourself as:
@@ -53,7 +63,7 @@ $ gem install beautiful-log
 - config/application.rb
 
   ```ruby
-  Logger.new(config.paths["log"].first)
+  config.logger = Logger.new(config.paths["log"].first)
   config.logger.formatter = Beautiful::Log::Formatter.new
   ```
 
@@ -77,19 +87,30 @@ You can change log level from `:debug` to `:fatal` depending on staging level (d
 
 You can customize displayed log by passing a hash to constructor of `Beautiful::Log::Formatter`.
 
+Below is default value.
+
 ```ruby
 Beautiful::Log::Formatter.new(
   only_project_code: true,
-  backtrace_ignore_paths: ['vendoe/bundle', /some\/path/]
+  backtrace_ignore_paths: [],
+  highlighted_line_range: 3,
+  highlighted_line_color: :cyan,
+  backtrace_color: :light_red,
+  error_file_path_color: :red,
+  status_code_color: { (1..3) => :green, 'other' => :red}
 )
 ```
 
-Name                     | Type                     | Default             | Description
------------------------- | ------------------------ | ------------------- | -----------------------------------------------------------------------------------------------------------------
-`only_project_code`      | Boolean                  | `true`              | Limit displayed file path within below the project root.
-`backtrace_ignore_paths` | Array of Stringor Regexp | `['bundle/vendor']` | The ignore paths following to `Rail.root.to_s`, in case you include installed gems inside your project directory. |
+### Note
 
-### TODOs
+- `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns, or the path whch is written in `.bundle/config` .
 
-- [ ] Color specification
-- [ ] Log format specification
+- Pick your favorite color from [fazibear/colorize](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61).
+
+- If you `status_code_color` hash, status colors are merged with default values shown above.
+
+## Contribution
+
+- If you find any problematic behavior, please make an issue with problem back trace.
+- If you want to make changes, fork this repository, the make a pull request.
+
