@@ -42,8 +42,6 @@ module Beautiful
 
       def call(severity, timestamp, _progname, message)
         problem_code = highlighted_code(message) if message.is_a?(Exception)
-        message = format_render_log(message) if render_log?(message)
-        message = format_complete_log(message) if complete_log?(message)
         message = "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
         message = "#{message}\n#{problem_code}" if problem_code.present?
         message = "\n#{message}\n" if %w(FATAL ERROR).include?(severity)
@@ -63,6 +61,8 @@ module Beautiful
 
       def message_body(message)
         return format_exception(message) if message.is_a?(Exception)
+        return format_render_log(message) if render_log?(message)
+        return format_complete_log(message) if complete_log?(message)
         return message if message.is_a?(String)
         message.pretty_inspect
       end
