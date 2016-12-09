@@ -13,7 +13,9 @@ module Beautiful
       end
 
       def call(severity, timestamp, _progname, message)
+        problem_code = highlighted_code(message) if message.is_a?(Exception)
         message = "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
+        message = "#{message}\n#{problem_code}" if problem_code.present?
         message = "\n#{message}\n" if %w(FATAL ERROR).include?(severity)
         message
       end
@@ -32,6 +34,30 @@ module Beautiful
         return format_exception(message) if message.is_a?(Exception)
         return message if message.is_a?(String)
         message.pretty_inspect
+      end
+
+      def highlighted_code(error)
+        problem_point = error.backtrace.find { |backtrace_line| !ignore_path?(backtrace_line) }
+        return unless problem_point.present?
+        file_path, line_number, _method = problem_point.split(':')
+        line_number = line_number.to_i
+        min_index = line_number - 1 - 3
+        min_index = 0 if min_index < 0
+        max_index = line_number - 1 + 3
+
+        code_lines = []
+        open(file_path) do |f|
+          file_content = f.read
+          code_lines = file_content.split("\n")[min_index..max_index]
+        end
+        line_code_pairs = [(min_index + 1..min_index + code_lines.length).to_a, code_lines].transpose
+        numbered_code = line_code_pairs.map do |line_code_pair|
+          code = "\t  #{line_code_pair[0]}: #{line_code_pair[1]}".cyan
+          code = code.bold.underline if line_code_pair[0] == line_number
+          code
+        end.join("\n")
+
+        "\t#{file_path.cyan}\n#{numbered_code}\n"
       end
 
       def format_exception(e)
