@@ -13,7 +13,7 @@ Make **Rails** log beautiful!
 
 ## Backtrace
 
-![_2016-12-10_1_29_59](https://cloud.githubusercontent.com/assets/1780339/21057135/b61351d6-be7b-11e6-91d4-e754abb730a4.png)
+<img width="709" alt="_2016-12-10_2_54_42" src="https://cloud.githubusercontent.com/assets/1780339/21059065/286b1932-be84-11e6-9d2e-5587afaf86ef.png">
 
 Your backtrace will be neat and understandable with `Beautiful::Log::Formatter`.
 
