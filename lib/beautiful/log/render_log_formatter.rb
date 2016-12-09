@@ -4,11 +4,10 @@ module Beautiful
     module RenderLogFoematter
       private
 
-      # TODO: color - project line
       def format_render_log(backtrace_line)
         formatted_log = omit_project_path(backtrace_line)
         if project_render_view?(backtrace_line)
-          formatted_log.light_red
+          formatted_log.send(backtrace_color)
         else
           formatted_log
         end

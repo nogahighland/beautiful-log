@@ -6,9 +6,8 @@ module Beautiful
     module ErrorFormattable
       private
 
-      # TODO: color - exception
       def format_exception(e)
-        "#{e.to_s.cyan}\n#{format_backtrace(e)}"
+        "#{e.to_s.send(backtrace_color)}\n#{format_backtrace(e)}"
       end
 
       def format_backtrace(e)
@@ -24,7 +23,6 @@ module Beautiful
         format_lines.join("\n")
       end
 
-      # TODO: color - filepath
       def highlight_line(line)
         line = omit_project_path(line)
         file_path, line_number, method = line.split(':')
@@ -33,7 +31,7 @@ module Beautiful
         file_path = (levels[0..-2] << levels[-1].bold.underline).join('/')
         line = [file_path, line_number, method].join(':')
 
-        line.light_red
+        line.send(highlighted_line_color)
       end
     end
   end

@@ -13,11 +13,10 @@ module Beautiful
         prepend_number_to_code_lines(code_lines, line_number.to_i, min_index + 1)
       end
 
-      # TODO: const
       def extract_range(line_number)
-        min_index = line_number - 1 - 3
+        min_index = line_number - 1 - highlighted_line_range
         min_index = 0 if min_index.negative?
-        max_index = line_number - 1 + 3
+        max_index = line_number - 1 + highlighted_line_range
         [min_index, max_index]
       end
 
@@ -30,14 +29,13 @@ module Beautiful
         code_lines
       end
 
-      # TODO: color - code_lines
       def prepend_number_to_code_lines(code_lines, line_number, min_line_number)
         line_numbers = line_numbers(min_line_number, code_lines.length)
         line_code_pairs = [line_numbers, code_lines].transpose
         line_code_pairs.map do |line_code_pair|
           number, code = line_code_pair
           code = number == line_number ? code.bold.underline : code
-          "\t  #{number}: #{code}".cyan
+          "\t  #{number}: #{code}".send(highlighted_line_color)
         end.join("\n")
       end
 

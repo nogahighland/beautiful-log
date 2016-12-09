@@ -9,7 +9,7 @@ require 'beautiful/log/complete_log_formatter'
 module Beautiful
   module Log
     class Formatter < ::Logger::Formatter
-      attr_reader :only_project_code, :ignore_paths, :allow_path
+      attr_reader :only_project_code, :ignore_paths, :allow_path, :backtrace_ignore_paths, :highlighted_line_range, :highlighted_line_color, :backtrace_color, :error_file_path_color, :status_code_color
       cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%m:%S' }
 
       include CodeRandeExtractable
@@ -18,10 +18,24 @@ module Beautiful
       include RenderLogFoematter
       include CompleteLogFormatter
 
-      def initialize(only_project_code: true, backtrace_ignore_paths: [])
+      def initialize(
+        only_project_code: true,
+        backtrace_ignore_paths: [],
+        highlighted_line_range: 3,
+        highlighted_line_color: :cyan,
+        backtrace_color: :light_red,
+        error_file_path_color: :red,
+        status_code_color: { (1..3) => :green, 'other' => :red}
+      )
         @only_project_code = only_project_code
-        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
-        @allow_path        = Regexp.new bundle_install_path
+        @ignore_paths = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
+        @allow_path = Regexp.new bundle_install_path
+        @backtrace_ignore_paths = backtrace_ignore_paths
+        @highlighted_line_range = highlighted_line_range
+        @highlighted_line_color = highlighted_line_color
+        @backtrace_color = backtrace_color
+        @error_file_path_color = error_file_path_color
+        @status_code_color = status_code_color.with_indifferent_access
       end
 
       def call(severity, timestamp, _progname, message)
