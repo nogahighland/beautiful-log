@@ -52,6 +52,7 @@ module Beautiful
 
       private
 
+      # TODO: color
       def message_header(timestamp, severity)
         header = "[#{timestamp.strftime(datetime_format)}] (pida=#{$PROCESS_ID}) #{format('%5s', severity)}"
         return header.red.swap if 'FATAL' == severity

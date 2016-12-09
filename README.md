@@ -107,10 +107,15 @@ Beautiful::Log::Formatter.new(
 
 - Pick your favorite color from [fazibear/colorize](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61).
 
-- If you `status_code_color` hash, status colors are merged with default values shown above.
+- If you pass a hash as `status_code_color`, status colors are merged with default values shown above.
 
 ## Contribution
 
-- If you find any problematic behavior, please make an issue with problem back trace.
-- If you want to make changes, fork this repository, the make a pull request.
+- If you find any problematic behaviors, please make an issue with problem backtrace.
+- If you want to make changes, fork this repository, then make a pull request.
+
+# TODOs
+
+- [ ] Is is smarter to call a method with a block when customize log style?
+- [ ] Customize log _header_ style according to its severity
 
