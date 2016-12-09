@@ -8,12 +8,14 @@ module Beautiful
 
       def initialize(only_project_code: true, backtrace_ignore_paths: [])
         @only_project_code = only_project_code
-        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << bundle_path
+        @ignore_paths      = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
         @allow_path        = Regexp.new bundle_install_path
       end
 
       def call(severity, timestamp, _progname, message)
-        "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
+        message = "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
+        message = "\n#{message}\n" if %w(FATAL ERROR).include?(severity)
+        message
       end
 
       private
