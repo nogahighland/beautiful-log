@@ -1,4 +1,4 @@
-# Beautiful::Log(β)
+# Beautiful::Log(beta)
 
 ![](https://travis-ci.org/nogahighland/beautiful-log.svg?branch=master)
 
@@ -119,4 +119,5 @@ Beautiful::Log::Formatter.new(
 - [ ] Is is smarter to call a method with a block when customize log style?
 - [ ] Customize log _header_ style according to its severity
 - [ ] Specs
+- [ ] Publish as a gem (remoeve beta)
 
