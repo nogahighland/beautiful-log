@@ -49,8 +49,6 @@ Rake tasks are fully logged with `Beautiful::Log::TaskLogging` just by adding so
 
 ## Installation
 
-**!!This gem is not published yet.!!**
-
 Add this line to your application's Gemfile:
 
 ```ruby
