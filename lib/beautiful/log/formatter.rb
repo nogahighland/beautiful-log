@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'pp'
 require 'beautiful/log/modules'
+require "awesome_print"
 
 module Beautiful
   module Log
@@ -70,7 +71,7 @@ module Beautiful
         return format_render_log(message) if render_log?(message)
         return format_complete_log(message) if complete_log?(message)
         return message if message.is_a?(String)
-        message.pretty_inspect.gsub(/\n/, "\n" + ' ' * header_length)
+        message.ai.gsub(/\n/, "\n" + ' ' * header_length)
       end
 
       def highlighted_code(error)
