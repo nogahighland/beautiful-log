@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'pp'
 require 'beautiful/log/code_range_extractable'
 require 'beautiful/log/path_ommittable'
 require 'beautiful/log/error_formattable'
@@ -43,13 +44,14 @@ module Beautiful
         @highlighted_line_styles = highlighted_line_styles
         @backtrace_styles = backtrace_styles
         @error_file_path_styles = error_file_path_styles
-        @status_code_styles = DEFAULT_STATUS_CODE_STYLES.merge(status_code_styles)
-        @severity_styles = DEFAULT_SEVERITY_STYLES.merge(severity_styles)
+        @status_code_styles = DEFAULT_STATUS_CODE_STYLES.merge(status_code_styles).with_indifferent_access
+        @severity_styles = DEFAULT_SEVERITY_STYLES.merge(severity_styles).with_indifferent_access
       end
 
       def call(severity, timestamp, _progname, message)
         problem_code = highlighted_code(message) if message.is_a?(Exception)
-        message = "#{message_header(timestamp, severity)} -- : #{message_body(message)}\n"
+        header = message_header(timestamp, severity)
+        message = "#{header} -- : #{message_body(message, header.uncolorize.length + 6)}\n"
         message = "#{message}\n#{problem_code}" if problem_code.present?
         message = "\n#{message}\n" if %w(FATAL ERROR).include?(severity)
         message
@@ -57,7 +59,6 @@ module Beautiful
 
       private
 
-      # TODO: color
       def message_header(timestamp, severity)
         header = "[#{timestamp.strftime(datetime_format)}] (pida=#{$PROCESS_ID}) #{format('%5s', severity)}"
         colored_header(severity, header)
@@ -69,12 +70,12 @@ module Beautiful
         apply_styles(header, styles)
       end
 
-      def message_body(message)
+      def message_body(message, header_length)
         return format_exception(message) if message.is_a?(Exception)
         return format_render_log(message) if render_log?(message)
         return format_complete_log(message) if complete_log?(message)
         return message if message.is_a?(String)
-        message.pretty_inspect
+        message.pretty_inspect.gsub(/\n/, "\n" + ' ' * header_length)
       end
 
       def highlighted_code(error)

@@ -28,6 +28,18 @@ Your backtrace will be neat and understandable with `Beautiful::Log::Formatter`.
 
 You don't miss the responses' safety any more. A log of response completion tells either your app responded correctly or not by intuitive colors. You can customize color according to status code range (hundread level e.g: `1..3`.
 
+## Pretty-printd object
+
+A complex object is beautifully displayed. You won't be annoyed with messy long string of object description.
+
+- Hash
+
+<img width="666" alt="_2016-12-12_0_53_25 2" src="https://cloud.githubusercontent.com/assets/1780339/21081243/a083793c-c005-11e6-8d7b-73308a1cc277.png">
+
+- ActiveRecord instance
+<img width="666" alt="_2016-12-12_0_53_25" src="https://cloud.githubusercontent.com/assets/1780339/21081244/a0bb1892-c005-11e6-81ef-dcf4c153400a.png">
+
+
 _Rescue error, just log it `Rails.logger.error e` ._
 
 ## Logs in Rake tasks
@@ -124,7 +136,7 @@ Beautiful::Log::Formatter.new(
 
 #### Style specification
 
-- For `-styles` keys, you can set a **Symbol** or an **Array of Symbol** to style the string (color, bold, underline, etc). The elements of the array are applied in order.
+- For `*_styles` keys, you can set a **Symbol** or an **Array of Symbol** to style the string (color, bold, underline, etc). The elements of the array are applied in order.
 
 - Pick your favorite color or style (called 'mode' in [fazibear/colorize](https://github.com/fazibear/colorize/)) below.
   - [color](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61)
