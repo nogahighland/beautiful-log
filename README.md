@@ -37,6 +37,7 @@ A complex object is beautifully displayed. You won't be annoyed with messy long 
 <img width="666" alt="_2016-12-12_0_53_25 2" src="https://cloud.githubusercontent.com/assets/1780339/21081243/a083793c-c005-11e6-8d7b-73308a1cc277.png">
 
 - ActiveRecord instance
+
 <img width="666" alt="_2016-12-12_0_53_25" src="https://cloud.githubusercontent.com/assets/1780339/21081244/a0bb1892-c005-11e6-81ef-dcf4c153400a.png">
 
 
