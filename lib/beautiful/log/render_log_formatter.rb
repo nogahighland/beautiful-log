@@ -1,13 +1,18 @@
 # frozen_string_literal: true
+require 'colorize'
+require 'beautiful/log/stylable'
+
 module Beautiful
   module Log
     module RenderLogFoematter
+      include Stylable
+
       private
 
       def format_render_log(backtrace_line)
         formatted_log = omit_project_path(backtrace_line)
         if project_render_view?(backtrace_line)
-          formatted_log.send(backtrace_color)
+          apply_styles(formatted_log, backtrace_color)
         else
           formatted_log
         end

@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 require 'colorize'
+require 'beautiful/log/stylable'
 
 module Beautiful
   module Log
     module ErrorFormattable
+      include Stylable
+
       private
 
       def format_exception(e)
-        "#{e.to_s.send(backtrace_color)}\n#{format_backtrace(e)}"
+        error_message = e.to_s
+        error_message = apply_styles(error_message, backtrace_styles)
+        "#{error_message}\n#{format_backtrace(e)}"
       end
 
       def format_backtrace(e)
@@ -31,7 +36,7 @@ module Beautiful
         file_path = (levels[0..-2] << levels[-1].bold).join('/')
         line = [file_path, line_number, method].join(':')
 
-        line.send(backtrace_color)
+        apply_styles(line, backtrace_styles)
       end
     end
   end

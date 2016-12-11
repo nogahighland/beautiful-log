@@ -1,7 +1,11 @@
 # frozen_string_literal: true
+require 'beautiful/log/stylable'
+
 module Beautiful
   module Log
     module CompleteLogFormatter
+      include Stylable
+
       private
 
       COMPLETE_LOG_REGEXP = /\ACompleted (\d{3})/
@@ -13,11 +17,11 @@ module Beautiful
 
       def format_complete_log(log)
         status_code_hundread = log.match(COMPLETE_LOG_REGEXP)[1][0].to_i
-        _status_range, color = status_code_color.find do |range, color|
-          next unless range.is_a?(Range)
-          range.include?(status_code_hundread)
+        _status_range, color = status_code_styles.find do |range, color|
+          next range.include?(status_code_hundread) if range.is_a?(Range)
+          range == status_code_hundread if range.is_a?(Integer)
         end
-        log.send(color || status_code_color[:other])
+        apply_styles(log, color || status_code_color[:other])
       end
     end
   end

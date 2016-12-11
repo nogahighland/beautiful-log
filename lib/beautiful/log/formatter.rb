@@ -1,15 +1,18 @@
 # frozen_string_literal: true
-require 'colorize'
 require 'beautiful/log/code_range_extractable'
 require 'beautiful/log/path_ommittable'
 require 'beautiful/log/error_formattable'
 require 'beautiful/log/render_log_formatter'
 require 'beautiful/log/complete_log_formatter'
+require 'beautiful/log/stylable'
 
 module Beautiful
   module Log
     class Formatter < ::Logger::Formatter
-      attr_reader :only_project_code, :ignore_paths, :allow_path, :backtrace_ignore_paths, :highlighted_line_range, :highlighted_line_color, :backtrace_color, :error_file_path_color, :status_code_color
+      attr_reader :only_project_code, :ignore_paths, :allow_path, :backtrace_ignore_paths,
+                  :highlighted_line_range, :highlighted_line_styles, :backtrace_styles,
+                  :error_file_path_styles, :status_code_styles, :severity_styles
+
       cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%m:%S' }
 
       include CodeRandeExtractable
@@ -17,27 +20,31 @@ module Beautiful
       include ErrorFormattable
       include RenderLogFoematter
       include CompleteLogFormatter
+      include Stylable
 
-      DEFAULT_STATUS_CODE_COLORS = { (1..3) => :green, 'other' => :red }.freeze
+      DEFAULT_STATUS_CODE_STYLES = { (1..3) => :green, 'other' => :red }.freeze
+      DEFAULT_SEVERITY_STYLES = { FATAL: [:red, :wap], ERROR: :red, WARN: :light_red }
 
       def initialize(
         only_project_code: true,
         backtrace_ignore_paths: [],
         highlighted_line_range: 3,
-        highlighted_line_color: :cyan,
-        backtrace_color: :light_red,
-        error_file_path_color: :red,
-        status_code_color: {}
+        highlighted_line_styles: :cyan,
+        backtrace_styles: :light_red,
+        error_file_path_styles: :red,
+        status_code_styles: {},
+        severity_styles: {}
       )
         @only_project_code = only_project_code
         @ignore_paths = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
         @allow_path = Regexp.new bundle_install_path
         @backtrace_ignore_paths = backtrace_ignore_paths
         @highlighted_line_range = highlighted_line_range
-        @highlighted_line_color = highlighted_line_color
-        @backtrace_color = backtrace_color
-        @error_file_path_color = error_file_path_color
-        @status_code_color = DEFAULT_STATUS_CODE_COLORS.merge(status_code_color)
+        @highlighted_line_styles = highlighted_line_styles
+        @backtrace_styles = backtrace_styles
+        @error_file_path_styles = error_file_path_styles
+        @status_code_styles = DEFAULT_STATUS_CODE_STYLES.merge(status_code_styles)
+        @severity_styles = DEFAULT_SEVERITY_STYLES.merge(severity_styles)
       end
 
       def call(severity, timestamp, _progname, message)
@@ -53,10 +60,13 @@ module Beautiful
       # TODO: color
       def message_header(timestamp, severity)
         header = "[#{timestamp.strftime(datetime_format)}] (pida=#{$PROCESS_ID}) #{format('%5s', severity)}"
-        return header.red.swap if 'FATAL' == severity
-        return header.red if 'ERROR' == severity
-        return header.light_red if 'WARN' == severity
-        header
+        colored_header(severity, header)
+      end
+
+      def colored_header(severity, header)
+        styles = severity_styles[severity.to_sym]
+        return header if styles.blank?
+        apply_styles(header, styles)
       end
 
       def message_body(message)

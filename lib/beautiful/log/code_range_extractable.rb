@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 require 'colorize'
+require 'beautiful/log/stylable'
 
 module Beautiful
   module Log
     module CodeRandeExtractable
+      include Stylable
+
       private
 
       def numbered_code_lines(backtrace_line)
@@ -37,7 +40,7 @@ module Beautiful
           number, code = line_code_pair
           code = number == line_number ? emphasize(code) : code
           number = format_line_number(number, max_length)
-          "\t  #{number}: #{code}".send(highlighted_line_color)
+          apply_styles("\t  #{number}: #{code}", highlighted_line_styles)
         end.join("\n")
       end
 

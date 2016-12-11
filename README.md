@@ -70,7 +70,7 @@ $ gem install beautiful-log
 - config/environments/development.rb
 
   ```ruby
-  config.log_level = :debug
+  config.log_level = :debug # set the level you need
   ```
 
 You can change log level from `:debug` to `:fatal` depending on staging level (develop/production/test).
@@ -80,7 +80,21 @@ You can change log level from `:debug` to `:fatal` depending on staging level (d
   ```ruby
   Rails.logger = Logger.new(STDOUT)
   Rails.logger.formatter = Beautiful::Log::Formatter.new
-  Rails.logger.level = Logger::DEBUG
+  Rails.logger.level = Logger::DEBUG # set the level you need
+  ```
+
+- Include in application.rb
+
+  ```ruby
+  module YourApplication
+    class Application < Rails::Application
+      # This is equivalent to code below:
+      #   Rails.logger = Logger.new(config.paths['log'].first)
+      #   Rails.logger.formatter = Beautiful::Log::Formatter.new
+      include Beautiful::Log
+      :
+    end
+  end
   ```
 
 ## Configurations
@@ -94,10 +108,11 @@ Beautiful::Log::Formatter.new(
   only_project_code: true,
   backtrace_ignore_paths: [],
   highlighted_line_range: 3,
-  highlighted_line_color: :cyan,
-  backtrace_color: :light_red,
-  error_file_path_color: :red,
-  status_code_color: { (1..3) => :green, 'other' => :red}
+  highlighted_line_styles: :cyan,
+  backtrace_styles: :light_red,
+  severity_styles: {}
+  status_code_styles: { (1..3) => :green, 'other' => :red},
+  error_file_path_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red }
 )
 ```
 
@@ -105,9 +120,16 @@ Beautiful::Log::Formatter.new(
 
 - `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns, or the path whch is written in `.bundle/config` .
 
-- Pick your favorite color from [fazibear/colorize](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61).
+- If you pass a hash as `status_code_styles:` or `severity_styles`, those stypes are merged with default values shown above.
 
-- If you pass a hash as `status_code_color`, status colors are merged with default values shown above.
+#### Style specification
+
+- For `-styles` keys, you can set a **Symbol** or an **Array of Symbol** to style the string (color, bold, underline, etc). The elements of the array are applied in order.
+
+- Pick your favorite color or style (called 'mode' in [fazibear/colorize](https://github.com/fazibear/colorize/)) below.
+  - [color](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61)
+  - [mode](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L78)
+
 
 ## Contribution
 
@@ -116,8 +138,7 @@ Beautiful::Log::Formatter.new(
 
 # TODOs
 
-- [ ] Is is smarter to call a method with a block when customize log style?
-- [ ] Customize log _header_ style according to its severity
 - [ ] Specs
 - [ ] Publish as a gem (remoeve beta)
+- [ ] Is is smarter to pass a proc/block to customize log style?
 
