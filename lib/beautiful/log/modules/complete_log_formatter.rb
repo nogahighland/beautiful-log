@@ -18,7 +18,7 @@ module Beautiful
 
         def format_complete_log(log)
           status_code_hundread = log.match(COMPLETE_LOG_REGEXP)[1][0].to_i
-          _status_range, color = status_code_styles.find do |range, color|
+          _status_range, color = status_code_styles.find do |range, _color|
             next range.include?(status_code_hundread) if range.is_a?(Range)
             range == status_code_hundread if range.is_a?(Integer)
           end

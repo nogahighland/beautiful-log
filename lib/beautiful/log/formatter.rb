@@ -16,8 +16,9 @@ module Beautiful
               Modules::CompleteLogFormatter, Modules::Stylable
 
       DEFAULT_STATUS_CODE_STYLES = { (1..3) => :green, 'other' => :red }.freeze
-      DEFAULT_SEVERITY_STYLES = { FATAL: [:red, :wap], ERROR: :red, WARN: :light_red }
+      DEFAULT_SEVERITY_STYLES = { FATAL: [:red, :wap], ERROR: :red, WARN: :light_red }.freeze
 
+      # rubocop: disable Metrics/AbcSize, Style/ParameterLists, Style/MethodLength
       def initialize(
         only_project_code: true,
         backtrace_ignore_paths: [],
@@ -29,7 +30,9 @@ module Beautiful
         severity_styles: {}
       )
         @only_project_code = only_project_code
-        @ignore_paths = backtrace_ignore_paths.map { |path| Regexp.new "#{Rails.root}/#{path}" } << Regexp.new(bundle_path)
+        @ignore_paths = backtrace_ignore_paths.map do |path|
+          Regexp.new "#{Rails.root}/#{path}"
+        end << Regexp.new(bundle_path)
         @allow_path = Regexp.new bundle_install_path
         @backtrace_ignore_paths = backtrace_ignore_paths
         @highlighted_line_range = highlighted_line_range
