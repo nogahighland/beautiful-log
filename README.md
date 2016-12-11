@@ -96,7 +96,7 @@ You can change log level from `:debug` to `:fatal` depending on staging level (d
   Rails.logger.level = Logger::DEBUG # set the level you need
   ```
 
-- Include in application.rb
+- Or just include in application.rb
 
   ```ruby
   module YourApplication
