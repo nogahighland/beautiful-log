@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 require 'pp'
-require 'beautiful/log/code_range_extractable'
-require 'beautiful/log/path_ommittable'
-require 'beautiful/log/error_formattable'
-require 'beautiful/log/render_log_formatter'
-require 'beautiful/log/complete_log_formatter'
-require 'beautiful/log/stylable'
+require 'beautiful/log/modules'
 
 module Beautiful
   module Log
@@ -16,12 +11,9 @@ module Beautiful
 
       cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%m:%S' }
 
-      include CodeRandeExtractable
-      include PathOmmittable
-      include ErrorFormattable
-      include RenderLogFoematter
-      include CompleteLogFormatter
-      include Stylable
+      include Modules::CodeRangeExtractable, Modules::PathOmmittable,
+              Modules::ErrorFormattable, Modules::RenderLogFoematter,
+              Modules::CompleteLogFormatter, Modules::Stylable
 
       DEFAULT_STATUS_CODE_STYLES = { (1..3) => :green, 'other' => :red }.freeze
       DEFAULT_SEVERITY_STYLES = { FATAL: [:red, :wap], ERROR: :red, WARN: :light_red }
