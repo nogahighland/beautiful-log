@@ -144,6 +144,10 @@ Beautiful::Log::Formatter.new(
   - [mode](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L78)
 
 
+## Requirements
+
+- Ruby 2.3-
+
 ## Contribution
 
 - If you find any problematic behaviors, please make an issue with problem backtrace.
