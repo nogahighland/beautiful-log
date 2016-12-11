@@ -131,7 +131,7 @@ Beautiful::Log::Formatter.new(
 
 ### Note
 
-- `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns, or the path whch is written in `.bundle/config` .
+- `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns,  whch is written in `.bundle/config` .
 
 - If you pass a hash as `status_code_styles:` or `severity_styles`, those stypes are merged with default values shown above.
 
