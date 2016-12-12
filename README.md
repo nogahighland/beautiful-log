@@ -34,14 +34,15 @@ Thanks to [awesome-print/awesome_print](https://github.com/awesome-print/awesome
 
 - Hash
 
-<img width="666" alt="_2016-12-12_0_53_25 2" src="https://cloud.githubusercontent.com/assets/1780339/21081243/a083793c-c005-11e6-8d7b-73308a1cc277.png">
+<img width="691" alt="hash" src="https://cloud.githubusercontent.com/assets/1780339/21100292/a3fec7cc-c0b6-11e6-9800-d711e8b9e829.png">
 
 - ActiveRecord instance
 
-<img width="666" alt="_2016-12-12_0_53_25" src="https://cloud.githubusercontent.com/assets/1780339/21081244/a0bb1892-c005-11e6-81ef-dcf4c153400a.png">
+<img width="691" alt="ar" src="https://cloud.githubusercontent.com/assets/1780339/21100291/a3fea602-c0b6-11e6-9ab3-d7bca6455947.png">
 
+[awesome-print/awesome_print](https://github.com/awesome-print/awesome_print) supports[more types](https://github.com/awesome-print/awesome_print/tree/master/lib/awesome_print/formatters) to beautiflize.
 
-_Rescue error, just log it `Rails.logger.error e` ._
+_All you need to do is rescue error, just log it `Rails.logger.error e` ._
 
 ## Logs in Rake tasks
 
@@ -84,7 +85,7 @@ $ gem install beautiful-log
   config.log_level = :debug # set the level you need
   ```
 
-You can change log level from `:debug` to `:fatal` depending on staging level (develop/production/test).
+You can change the log level from `:debug` to `:fatal` depending on staging level (develop/production/test).
 
 - Rakefile
 
@@ -110,9 +111,9 @@ You can change log level from `:debug` to `:fatal` depending on staging level (d
 
 ## Configurations
 
-You can customize displayed log by passing a hash to constructor of `Beautiful::Log::Formatter`.
+You can customize the log appearance by passing a hash to constructor of `Beautiful::Log::Formatter`.
 
-Below is default value.
+Below is a hash containing default values.
 
 ```ruby
 Beautiful::Log::Formatter.new(
@@ -121,21 +122,21 @@ Beautiful::Log::Formatter.new(
   highlighted_line_range: 3,
   highlighted_line_styles: :cyan,
   backtrace_styles: :light_red,
-  severity_styles: {}
+  error_file_path_styles: :red,
+  severity_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red },
   status_code_styles: { (1..3) => [:green, :bold], 'other' => [:red, :bold] },
-  error_file_path_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red }
 )
 ```
 
 ### Note
 
-- `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns,  whch is written in `.bundle/config` .
+- `backtrace_ignore_paths` includes bundle path if you use [Bundler](http://bundler.io/). The bundle path is a string `Bundler.bundle_path` returns,  which is written in `.bundle/config` .
 
 - If you pass a hash as `status_code_styles` or `severity_styles`, those styles are merged with default values shown above.
 
 #### Style specification
 
-- For `*_styles` keys, you can set a **Symbol** or an **Array of Symbol** to style the string (color, bold, underline, etc). The elements of the array are applied in order.
+- For `*_styles` keys, you can set a **Symbol** or an **Array of Symbol** to style a string (color, bold, underline, etc). The elements of the array are applied in order.
 
 - Pick your favorite color or style (called 'mode' in [fazibear/colorize](https://github.com/fazibear/colorize/)) below.
   - [color](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61)
@@ -153,7 +154,6 @@ Beautiful::Log::Formatter.new(
 
 # TODOs
 
-- [ ] Replace old images of pretty-printd object
 - [ ] Specs
 - [ ] Is is smarter to pass a proc/block to customize log style?
 
