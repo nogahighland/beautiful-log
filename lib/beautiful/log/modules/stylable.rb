@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'colorize'
+require 'colorized_string'
 
 module Beautiful
   module Log
@@ -8,6 +8,7 @@ module Beautiful
         private
 
         def apply_styles(string, styles)
+          string = ColorizedString.new(string)
           styles = [styles] if styles.is_a?(Symbol)
           styles.each do |style|
             style = style.to_sym if style.is_a?(String)
