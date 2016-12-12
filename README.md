@@ -8,7 +8,7 @@ Make **Rails** log beautiful!
 
 ![2016-09-28 1 24 05](https://cloud.githubusercontent.com/assets/1780339/18882983/67c4e460-851c-11e6-9600-fc100e7b7130.png)
 
-- Thanks to [fazibear/colorize](https://github.com/fazibear/colorize) , logged messages stand out according to their levels.
+- Thanks to [fazibear/colorize](https://github.com/fazibear/colorize), logged messages stand out according to their levels.
 - Messages align beautifully so you can start reading custom message instantly.
 
 ## Backtrace
@@ -30,7 +30,7 @@ You don't miss the responses' safety any more. A log of response completion tell
 
 ## Pretty-printd object
 
-A complex object is beautifully displayed. You won't be annoyed with messy long string of object description.
+Thanks to [awesome-print/awesome_print](https://github.com/awesome-print/awesome_print), a complex object is beautifully displayed. You won't be annoyed with messy long string of object description.
 
 - Hash
 
@@ -122,7 +122,7 @@ Beautiful::Log::Formatter.new(
   highlighted_line_styles: :cyan,
   backtrace_styles: :light_red,
   severity_styles: {}
-  status_code_styles: { (1..3) => :green, 'other' => :red},
+  status_code_styles: { (1..3) => [:green, :bold], 'other' => [:red, :bold] },
   error_file_path_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red }
 )
 ```
@@ -153,7 +153,7 @@ Beautiful::Log::Formatter.new(
 
 # TODOs
 
+- [ ] Replace old images of pretty-printd object
 - [ ] Specs
-- [ ] Publish as a gem (remoeve beta)
 - [ ] Is is smarter to pass a proc/block to customize log style?
 

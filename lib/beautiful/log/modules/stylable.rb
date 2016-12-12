@@ -9,11 +9,12 @@ module Beautiful
 
         def apply_styles(string, styles)
           styles = [styles] if styles.is_a?(Symbol)
-          styles.each_with_object(string) do |styled_string, style|
+          styles.each do |style|
             style = style.to_sym if style.is_a?(String)
-            next styled_string.send(style) if ''.respond_to?(style)
-            styled_string
+            next unless ''.respond_to?(style)
+            string = string.send(style)
           end
+          string
         end
       end
     end

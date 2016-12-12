@@ -22,7 +22,7 @@ module Beautiful
             next range.include?(status_code_hundread) if range.is_a?(Range)
             range == status_code_hundread if range.is_a?(Integer)
           end
-          apply_styles(log, color || status_code_styles[:other])
+          apply_styles(log, color || status_code_styles[:other]) + "\n"
         end
       end
     end

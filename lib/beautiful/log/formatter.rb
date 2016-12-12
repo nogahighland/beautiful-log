@@ -16,7 +16,7 @@ module Beautiful
               Modules::ErrorFormattable, Modules::RenderLogFoematter,
               Modules::CompleteLogFormatter, Modules::Stylable
 
-      DEFAULT_STATUS_CODE_STYLES = { (1..3) => :green, 'other' => :red }.freeze
+      DEFAULT_STATUS_CODE_STYLES = { (1..3) => [:green, :bold], 'other' => [:red, :bold] }.freeze
       DEFAULT_SEVERITY_STYLES = { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red }.freeze
 
       # rubocop: disable Metrics/AbcSize, Style/ParameterLists, Style/MethodLength
