@@ -40,7 +40,7 @@ Thanks to [awesome-print/awesome_print](https://github.com/awesome-print/awesome
 
 <img width="691" alt="ar" src="https://cloud.githubusercontent.com/assets/1780339/21100291/a3fea602-c0b6-11e6-9ab3-d7bca6455947.png">
 
-[awesome-print/awesome_print](https://github.com/awesome-print/awesome_print) supports[more types](https://github.com/awesome-print/awesome_print/tree/master/lib/awesome_print/formatters) to beautiflize.
+[awesome-print/awesome_print](https://github.com/awesome-print/awesome_print) supports [more types](https://github.com/awesome-print/awesome_print/tree/master/lib/awesome_print/formatters) to beautiflize.
 
 _All you need to do is rescue error, just log it `Rails.logger.error e` ._
 
