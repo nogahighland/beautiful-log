@@ -77,8 +77,8 @@ module Beautiful
       def highlighted_code(error)
         problem_point = error.backtrace.find { |backtrace_line| !ignore_path?(backtrace_line) }
         return unless problem_point.present?
-        file_path = problem_point.split(':')[0]
-        "\t#{file_path.cyan}\n#{numbered_code_lines(problem_point)}\n"
+        file_path = apply_styles(problem_point.split(':')[0], error_file_path_styles)
+        "\t#{file_path}\n#{numbered_code_lines(problem_point)}\n"
       end
     end
   end
