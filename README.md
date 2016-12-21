@@ -1,6 +1,7 @@
 # Beautiful::Log(beta)
 
 ![](https://travis-ci.org/nogahighland/beautiful-log.svg?branch=master)
+[![Gem Version](https://badge.fury.io/rb/beautiful-log.svg)](https://badge.fury.io/rb/beautiful-log)
 
 Make **Rails** log beautiful!
 
