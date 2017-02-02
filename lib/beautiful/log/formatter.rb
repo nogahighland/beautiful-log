@@ -10,7 +10,7 @@ module Beautiful
                   :highlighted_line_range, :highlighted_line_styles, :backtrace_styles,
                   :error_file_path_styles, :status_code_styles, :severity_styles
 
-      cattr_accessor(:datetime_format) { '%Y-%M-%d %H:%m:%S' }
+      cattr_accessor(:datetime_format) { '%Y-%m-%d %H:%M:%S' }
 
       include Modules::CodeRangeExtractable, Modules::PathOmmittable,
               Modules::ErrorFormattable, Modules::RenderLogFoematter,
