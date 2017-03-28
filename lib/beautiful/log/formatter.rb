@@ -46,7 +46,7 @@ module Beautiful
 
       def call(severity, timestamp, _progname, message)
         problem_code = highlighted_code(message) if message.is_a?(Exception)
-        header = message_header(timestamp, severity)
+        header = message_header(timestamp, severity, caller)
         message = "#{header} -- : #{message_body(message, header.uncolorize.length + 6)}\n"
         message = "#{message}\n#{problem_code}" if problem_code.present?
         message = "\n#{message}\n" if %w(FATAL ERROR).include?(severity)
@@ -55,9 +55,16 @@ module Beautiful
 
       private
 
-      def message_header(timestamp, severity)
-        header = "[#{timestamp.strftime(datetime_format)}] (pida=#{$PROCESS_ID}) #{format('%5s', severity)}"
+      def message_header(timestamp, severity, backtrace)
+        header = "[#{timestamp.strftime(datetime_format)}] (pida=#{$PROCESS_ID}) #{file_line(backtrace)} #{format('%5s', severity)}"
         colored_header(severity, header)
+      end
+
+      def file_line(backtrace_lines)
+        file_line = backtrace_lines.find do |line|
+          (only_project_code && project_code?(line)) && !ignore_path?(line)
+        end
+        omit_project_path(file_line) if file_line.present?
       end
 
       def colored_header(severity, header)
