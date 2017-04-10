@@ -28,7 +28,8 @@ module Beautiful
         backtrace_styles: :light_red,
         error_file_path_styles: :red,
         status_code_styles: {},
-        severity_styles: {}
+        severity_styles: {},
+        occurence_line: :light_blue
       )
         @only_project_code = only_project_code
         @ignore_paths = backtrace_ignore_paths.map do |path|
@@ -42,6 +43,7 @@ module Beautiful
         @error_file_path_styles = error_file_path_styles
         @status_code_styles = DEFAULT_STATUS_CODE_STYLES.merge(status_code_styles).with_indifferent_access
         @severity_styles = DEFAULT_SEVERITY_STYLES.merge(severity_styles).with_indifferent_access
+        @occurence_line = occurence_line
       end
 
       def call(severity, timestamp, _progname, message)
@@ -64,7 +66,7 @@ module Beautiful
         file_line = backtrace_lines.find do |line|
           (only_project_code && project_code?(line)) && !ignore_path?(line)
         end
-        omit_project_path(file_line) if file_line.present?
+        apply_styles(omit_project_path(file_line), @occurence_line) if file_line.present?
       end
 
       def colored_header(severity, header)

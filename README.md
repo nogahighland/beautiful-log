@@ -126,6 +126,7 @@ Beautiful::Log::Formatter.new(
   error_file_path_styles: :red,
   severity_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red },
   status_code_styles: { (1..3) => [:green, :bold], 'other' => [:red, :bold] },
+  occurence_line: :light_blue
 )
 ```
 
