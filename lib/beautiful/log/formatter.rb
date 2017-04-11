@@ -22,6 +22,7 @@ module Beautiful
       # rubocop: disable Metrics/AbcSize, Style/ParameterLists, Style/MethodLength
       def initialize(
         only_project_code: true,
+        shrink_bundle_path: true,
         backtrace_ignore_paths: [],
         highlighted_line_range: 3,
         highlighted_line_styles: :cyan,
@@ -32,6 +33,7 @@ module Beautiful
         occurence_line: :light_blue
       )
         @only_project_code = only_project_code
+        @shrink_bundle_path = shrink_bundle_path
         @ignore_paths = backtrace_ignore_paths.map do |path|
           Regexp.new "#{Rails.root}/#{path}"
         end << Regexp.new(bundle_path)
@@ -66,6 +68,7 @@ module Beautiful
         file_line = backtrace_lines.find do |line|
           (only_project_code && project_code?(line)) && !ignore_path?(line)
         end
+        file_line&.sub!(bundle_install_path, '') if @shrink_bundle_path
         apply_styles(omit_project_path(file_line), @occurence_line) if file_line.present?
       end
 

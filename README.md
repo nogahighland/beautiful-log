@@ -119,6 +119,7 @@ Below is a hash containing default values.
 ```ruby
 Beautiful::Log::Formatter.new(
   only_project_code: true,
+  shrink_bundle_path: true,
   backtrace_ignore_paths: [],
   highlighted_line_range: 3,
   highlighted_line_styles: :cyan,
