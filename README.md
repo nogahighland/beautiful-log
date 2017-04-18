@@ -119,6 +119,7 @@ Below is a hash containing default values.
 ```ruby
 Beautiful::Log::Formatter.new(
   only_project_code: true,
+  shrink_bundle_path: true,
   backtrace_ignore_paths: [],
   highlighted_line_range: 3,
   highlighted_line_styles: :cyan,
@@ -126,6 +127,7 @@ Beautiful::Log::Formatter.new(
   error_file_path_styles: :red,
   severity_styles: { FATAL: [:red, :swap], ERROR: :red, WARN: :light_red },
   status_code_styles: { (1..3) => [:green, :bold], 'other' => [:red, :bold] },
+  occurence_line: :light_blue
 )
 ```
 
