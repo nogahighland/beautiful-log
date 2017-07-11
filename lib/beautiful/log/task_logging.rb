@@ -11,6 +11,7 @@ module Beautiful
               Rails.logger&.debug "[#{task.name} #{task.comment}] finished"
             rescue => e
               Rails.logger&.error e
+              raise e # passthrough
             end
           end
         end
