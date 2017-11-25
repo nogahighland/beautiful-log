@@ -5,6 +5,10 @@
 
 Make **Rails** log beautiful!
 
+## Requirements
+
+- Ruby 2.3-
+
 ## Colored log
 
 ![2016-09-28 1 24 05](https://cloud.githubusercontent.com/assets/1780339/18882983/67c4e460-851c-11e6-9600-fc100e7b7130.png)
@@ -145,10 +149,6 @@ Beautiful::Log::Formatter.new(
   - [color](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L61)
   - [mode](https://github.com/fazibear/colorize/blob/master/lib/colorize/class_methods.rb#L78)
 
-
-## Requirements
-
-- Ruby 2.3-
 
 ## Contribution
 
