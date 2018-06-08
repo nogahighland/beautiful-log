@@ -24,5 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_dependency 'colorize', '~> 0.8.1'
-  spec.add_dependency 'awesome_print', '~> 1.7.0'
+  spec.add_dependency 'awesome_print', '~> 1.8.0'
 end
