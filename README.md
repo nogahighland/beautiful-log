@@ -149,6 +149,7 @@ Beautiful::Log::Formatter.new(
 ## Requirements
 
 - Ruby 2.3-
+- Rails 4.x.x -
 
 ## Contribution
 
